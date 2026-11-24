@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="One-hour-ahead traffic forecasting with QNNJB-E on the Metro Interstate Traffic Volume dataset.">
+<title>Intelligent Transport | Smart City Experiments</title>
+<link rel="stylesheet" href="../../style.css">
+</head>
+<body>
+<main>
+<nav aria-label="Site"><a href="../../">Smart City Experiments</a></nav>
+<header class="hero">
+<h1>Intelligent Transport</h1>
+<p>One-hour-ahead traffic forecasting with QNNJB-E on the Metro Interstate Traffic Volume dataset.</p>
+</header>
+<section aria-labelledby="results">
+<h2 id="results">Forecasting results</h2>
+<div class="table" tabindex="0" role="region" aria-label="Test RMSE comparison">
+<table>
+<caption>Test RMSE in vehicles per hour. Lower is better.</caption>
+<thead><tr><th scope="col">Experiment</th><th scope="col">Starting model</th><th scope="col">After evolution</th></tr></thead>
+<tbody>
+<tr><th scope="row">30 trained QNNJB models</th><td>399.20</td><td><strong>380.00</strong> (−4.81%)</td></tr>
+<tr><th scope="row">20 generated QNNJB variants</th><td>444.16</td><td>409.10 (−7.89%)</td></tr>
+</tbody>
+</table>
+</div>
+<p>Across 30 seeds, the classical ANN achieved a mean test RMSE of <strong>302.23 ± 11.63</strong>, and the fixed-architecture QNNJB achieved <strong>435.75 ± 13.85</strong> (mean ± standard deviation). The ANN had 3201 trainable parameters and the QNNJB had 33.</p>
+</section>
+<section aria-labelledby="evolution">
+<h2 id="evolution">How the circuit evolved</h2>
+<p>The 20-variant run evaluated 1260 candidates over 21 generations. Structural mutations were followed by Adam refinement before selection. In 19 of 21 crossover events, both parents survived. The final validation-selected circuit came from the last crossover and used three CNOT gates in each of its two CNOT blocks, down from four per block at initialization.</p>
+<figure>
+<a href="evolution_progress.png"><img src="evolution_progress.png" alt="Recorded progression of training and validation error across generations"></a>
+<figcaption>Training and validation error over the 20-variant run.</figcaption>
+</figure>
+<figure>
+<a href="winner_Qiskit.png"><img src="winner_Qiskit.png" alt="Qiskit diagram of the eight-qubit circuit selected on validation"></a>
+<figcaption>Validation-selected circuit from the 20-variant run, with eight qubits and 33 trainable parameters.</figcaption>
+</figure>
+</section>
+<section aria-labelledby="protocol">
+<h2 id="protocol">Evaluation protocol</h2>
+<p>The chronological split contained 22,006 training, 7335 validation and 7337 test examples. Models were selected using validation error. Each evolutionary result comes from one noiseless simulation run. The reported improvements reflect the combined effect of structural search and further Adam training. Estimating the separate contribution of structural search would require an Adam-only control with a matched budget.</p>
+</section>
+<section aria-labelledby="downloads">
+<h2 id="downloads">Results data</h2>
+<ul>
+<li><a href="history.csv" download>Evolution history (CSV)</a></li>
+<li><a href="final_population_metrics.csv" download>Final population metrics (CSV)</a></li>
+<li><a href="statistics.csv" download>Benchmark statistics across 30 seeds (CSV)</a></li>
+</ul>
+</section>
+</main>
+</body>
+</html>
